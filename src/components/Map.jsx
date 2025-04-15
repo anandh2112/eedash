@@ -171,6 +171,18 @@ const OpenLayersMap = () => {
       mapInstance.getView().setCenter(fromLonLat([78.6569, 22.9734]));
       mapInstance.getView().setZoom(5);
       setSelectedClient(null);
+
+      // Reattach pointermove event for client pins
+      mapInstance.on('pointermove', (e) => {
+        const feature = mapInstance.forEachFeatureAtPixel(e.pixel, (f) => f);
+        if (feature && feature.get('client')) {
+          const coordinate = e.coordinate;
+          popupRef.current.innerHTML = feature.get('client').name;
+          overlayRef.current.setPosition(coordinate);
+        } else {
+          overlayRef.current.setPosition(undefined);
+        }
+      });
     }
   };
 
