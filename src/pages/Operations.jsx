@@ -23,7 +23,7 @@ const Operations = () => {
       case "RMZ":
         return {
           devices: [
-            { id: "RPI-202", name: "Lucy (Device 1)", staticIP: "192.168.2.201", status: "Inactive", lastPolled: "11 Mar 2025, 10:15", version: "v1.4.2", dateInstalled: "20 Jan 2025", health: 70, image: Lucy }, // Replace with the actual path to the picture
+            { id: "RPI-202", name: "Lucy (Device 1)", staticIP: "192.168.2.201", status: "Inactive", lastPolled: "11 Mar 2025, 10:15", version: "v1.4.2", dateInstalled: "20 Jan 2025", health: 55, image: Lucy }, // Replace with the actual path to the picture
             { id: "MB-302", name: "ModBus (Device 2)", macID: "AA:BB:CC:DD:EE:FF", status: "Online", lastPolled: "12 Mar 2025, 13:50", version: "v2.1.0", dateInstalled: "18 Feb 2025", health: 85, image: ModBus } // Replace with the actual path to the picture
           ],
           history: [
@@ -34,8 +34,8 @@ const Operations = () => {
       case "Banas":
         return {
           devices: [
-            { id: "RPI-303", name: "Lucy (Device 1)", staticIP: "192.168.3.55", status: "Active", lastPolled: "10 Mar 2025, 16:45", version: "v1.5.0", dateInstalled: "25 Jan 2025", health: 90, image: Lucy }, // Replace with the actual path to the picture
-            { id: "MB-403", name: "ModBus (Device 2)", macID: "11:22:33:44:55:66", status: "Offline", lastPolled: "9 Mar 2025, 12:30", version: "v2.2.3", dateInstalled: "5 Feb 2025", health: 60, image: ModBus } // Replace with the actual path to the picture
+            { id: "RPI-303", name: "Lucy (Device 1)", staticIP: "192.168.3.55", status: "Active", lastPolled: "10 Mar 2025, 16:45", version: "v1.5.0", dateInstalled: "25 Jan 2025", health: 15, image: Lucy }, // Replace with the actual path to the picture
+            { id: "MB-403", name: "ModBus (Device 2)", macID: "11:22:33:44:55:66", status: "Offline", lastPolled: "9 Mar 2025, 12:30", version: "v2.2.3", dateInstalled: "5 Feb 2025", health: 50, image: ModBus } // Replace with the actual path to the picture
           ],
           history: [
             { id: "RPI-303", key: "Static IP", value: "192.168.3.55" },
@@ -60,7 +60,11 @@ const Operations = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="p-8 bg-gray-100 h-[100%]">
+      <div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">Devices : </h3>
+      </div>
+      <div className="h-[95%] flex flex-col justify-between">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         {devices.map((device, index) => (
           <div
@@ -153,10 +157,10 @@ const Operations = () => {
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-4">
-          Hardware History
+        <h3 className="text-lg font-semibold text-gray-600 mb-4">
+          Hardware History :
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex gap-3">
           {history.map((item, index) => (
             <div
               className="bg-white shadow-md p-4 rounded-lg"
@@ -171,6 +175,7 @@ const Operations = () => {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

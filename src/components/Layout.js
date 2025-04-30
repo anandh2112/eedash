@@ -95,11 +95,11 @@ const Layout = () => {
   const unreadCount = notifications.filter((notif) => !notif.read).length;
 
   return (
-    <div className="dashboard-container">
+    <div className="flex h-[100vh]">
       {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="logo">
-          <img src={Logo} alt="Company Logo" className="logo-img" />
+      <aside className="w-[15%] bg-[#e8f5f1] p-[2vmin] flex flex-col items-center">
+        <div className="text-[4vmin] font-bold text-[#36404d] mb-[4vmin] flex justify-center items-center p-[10px]">
+          <img src={Logo} alt="Company Logo" className="w-[85%] h-auto" />
         </div>
         <nav>
           <Link to="/" className={activeTab === "Dashboard" ? "active" : ""}>
