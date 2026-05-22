@@ -1,0 +1,18 @@
+{
+    "metalware": {
+        "name": "Metalware",
+        "address": "Sector 62, Noida, India",
+        "contact": "+91 9876543210",
+        "current_version": "v1",
+        "lucy": 1,
+        "modbus": 1
+    },
+    "ap_discom": {
+        "name": "AP Discom",
+        "address": "your address here",
+        "contact": "+91 0000000000",
+        "current_version": "v1",
+        "lucy": 0,
+        "modbus": 0
+    }
+}
