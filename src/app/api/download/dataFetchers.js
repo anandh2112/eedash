@@ -81,7 +81,35 @@ export async function fetchTotalZonesHourlyData(start, end) {
     );
     return rows;
   } 
-  
+
+export async function fetchCustomTimeData(start, end, customStartHour, customEndHour) {
+  const startHour = `${String(customStartHour).padStart(2, '0')}:00:00`;
+  const endHour = `${String(customEndHour).padStart(2, '0')}:00:00`;
+
+  const [rows] = await pool.query(
+    `
+    SELECT
+      day,
+      SUM(ROUND(custom_meter_consumption, 1)) AS total_custom_consumption
+    FROM (
+      SELECT
+        DATE(timestamp) AS day,
+        energy_meter_id,
+        MAX(kVAh) - MIN(kVAh) AS custom_meter_consumption
+      FROM modbus_data
+      WHERE timestamp BETWEEN ? AND ?
+        AND TIME(timestamp) BETWEEN ? AND ?
+        AND energy_meter_id BETWEEN 1 AND 11
+      GROUP BY energy_meter_id, day
+    ) AS meter_custom_consumption
+    GROUP BY day
+    ORDER BY day
+    `,
+    [start, end, startHour, endHour]
+  );
+
+  return rows;
+}
 
   
    
