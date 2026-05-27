@@ -8,7 +8,7 @@ const Apdiscom = () => {
   const [mainTab, setMainTab] = useState("bookings");
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex min-w-0 flex-col gap-4 w-full">
       {/* Main Toggle: Bookings vs Tickets */}
       <div className="flex flex-col items-center justify-center gap-4 w-full">
         <div className="flex rounded-lg overflow-hidden border-2 border-gray-300 text-sm font-semibold shadow-md">

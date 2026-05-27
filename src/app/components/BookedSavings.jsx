@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
+import BaselineLogics from "./BaselineLogics";
 
 const BookedTypeBadge = ({ shift, rawInput }) => {
   if (shift === null || shift === undefined) {
@@ -53,6 +54,7 @@ const PeakCell = ({ share, kwh }) => {
 
 const BookedSavings = () => {
   const [activeTab, setActiveTab] = useState("commercial");
+  const [selectedConsumer, setSelectedConsumer] = useState(null);
 
   // Compute yesterday's date as the max selectable date
   const getYesterday = () => {
@@ -93,9 +95,26 @@ const BookedSavings = () => {
     fetchData();
   }, [fetchData]);
 
+  const openBaselineLogics = (row) => {
+    setSelectedConsumer({
+      scno: row.scno,
+      short_name: row.short_name,
+    });
+  };
+
+  if (selectedConsumer) {
+    return (
+      <BaselineLogics
+        consumer={selectedConsumer}
+        activeTab={activeTab}
+        onBack={() => setSelectedConsumer(null)}
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div className="bg-white p-2 rounded-md shadow w-full text-black">
+    <div className="flex min-w-0 flex-col gap-4 w-full">
+      <div className="bg-white p-2 rounded-md shadow w-full min-w-0 text-black">
 
         {/* Title + Toggle + Date Picker */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -103,7 +122,10 @@ const BookedSavings = () => {
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex rounded-md overflow-hidden border border-gray-300 text-sm font-medium">
               <button
-                onClick={() => setActiveTab("commercial")}
+                onClick={() => {
+                  setActiveTab("commercial");
+                  setSelectedConsumer(null);
+                }}
                 className={`px-4 py-1.5 transition-colors ${
                   activeTab === "commercial"
                     ? "bg-blue-600 text-white"
@@ -113,7 +135,10 @@ const BookedSavings = () => {
                 Commercial
               </button>
               <button
-                onClick={() => setActiveTab("industrial")}
+                onClick={() => {
+                  setActiveTab("industrial");
+                  setSelectedConsumer(null);
+                }}
                 className={`px-4 py-1.5 border-l border-gray-300 transition-colors ${
                   activeTab === "industrial"
                     ? "bg-blue-600 text-white"
@@ -149,7 +174,7 @@ const BookedSavings = () => {
 
         {/* ── COMMERCIAL TABLE ── */}
         {!loading && !error && activeTab === "commercial" && (
-          <div className="w-full overflow-x-auto">
+          <div className="w-full max-w-full min-w-0 max-h-[calc(100vh-260px)] overflow-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-300 text-center">
@@ -184,8 +209,16 @@ const BookedSavings = () => {
                   tableData.map((row, i) => (
                     <tr key={i} className="text-center hover:bg-gray-100">
                       <td className="border px-3 py-2 text-left">
-                        <span className="font-medium text-black text-sm">{row.short_name}</span>
-                        <span className="text-gray-400 text-xs ml-1">({row.scno})</span>
+                        <button
+                          type="button"
+                          onClick={() => openBaselineLogics(row)}
+                          className="text-left"
+                        >
+                          <span className="font-medium text-blue-600 text-sm underline decoration-dotted hover:text-blue-800">
+                            {row.short_name}
+                          </span>
+                          <span className="text-gray-400 text-xs ml-1">({row.scno})</span>
+                        </button>
                       </td>
                       <PeakCell share={row.previousDay?.peakShare} kwh={row.previousDay?.peakKwh} />
                       <PeakCell share={row.previousDay?.nonPeakShare} kwh={row.previousDay?.nonPeakKwh} />
@@ -211,7 +244,7 @@ const BookedSavings = () => {
 
         {/* ── INDUSTRIAL TABLE ── */}
         {!loading && !error && activeTab === "industrial" && (
-          <div className="overflow-x-auto w-full">
+          <div className="w-full max-w-full min-w-0 max-h-[calc(100vh-260px)] overflow-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-300 text-center">
@@ -253,9 +286,17 @@ const BookedSavings = () => {
                       <tr key={`${i}-${wi}`} className="text-center hover:bg-gray-100 align-middle">
                         {wi === 0 && (
                           <td className="border px-3 py-2 text-left align-middle" rowSpan={2}>
-                            <span className="font-medium text-black text-sm">{row.short_name}</span>
-                            <br />
-                            <span className="text-gray-400 text-xs">({row.scno})</span>
+                            <button
+                              type="button"
+                              onClick={() => openBaselineLogics(row)}
+                              className="text-left"
+                            >
+                              <span className="font-medium text-blue-600 text-sm underline decoration-dotted hover:text-blue-800">
+                                {row.short_name}
+                              </span>
+                              <br />
+                              <span className="text-gray-400 text-xs">({row.scno})</span>
+                            </button>
                           </td>
                         )}
                         <td className="border px-3 py-1.5 font-medium text-black">{label}</td>
